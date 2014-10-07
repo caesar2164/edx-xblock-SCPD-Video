@@ -33,21 +33,21 @@ def get_package_data(package, roots):
 
 
 setup(
-    name='templatexblock-xblock',
+    name='scpdvideo-xblock',
     version='0.1',
-    description='templatexblock XBlock',
+    description='scpdvideo XBlock',
     packages=[
-        'templatexblock',
+        'scpdvideo',
     ],
     install_requires=[
         'XBlock',
     ],
     entry_points={
         'xblock.v1': [
-            'templatexblock = templatexblock:TemplateXblock',
+            'scpdvideo = scpdvideo:SCPDVideo',
         ],
     },
-    package_data=get_package_data("templatexblock", [
+    package_data=get_package_data("scpdvideo", [
         "private",
         "public",
     ]),

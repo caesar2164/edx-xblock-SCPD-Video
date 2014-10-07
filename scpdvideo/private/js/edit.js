@@ -1,4 +1,4 @@
-function TemplateXblockEdit(runtime, element) {
+function SCPDVideoEdit(runtime, element) {
     'use strict';
 
     var $ = window.$;
@@ -20,8 +20,10 @@ function TemplateXblockEdit(runtime, element) {
         $.ajax(url, {
             type: 'POST',
             data: JSON.stringify({
-                'xblock_templatexblock_name':
-                    $('#xblock_templatexblock_name').val()
+                'xblock_scpdvideo_name':
+                    $('#xblock_scpdvideo_name').val(),
+                'xblock_scpdvideo_video_url':
+                    $('#xblock_scpdvideo_video_url').val()
             }),
             success: function buttonSaveOnSuccess() {
                 runtime.notify('save', {

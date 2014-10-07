@@ -8,9 +8,14 @@ from xblock.fields import String
 from xblock.fragment import Fragment
 
 
-class TemplateXblock(XBlock):
+class SCPDVideo(XBlock):
     name = String(
-        default="TemplateXblock",
+        default="SCPD Video",
+        scope=Scope.settings,
+        help='TODO',
+    )
+    videoUrl = String(
+        default="https://mvideos.stanford.edu/Viewer/Video/PlayVideo/?assetId=64819bff-bf15-49b9-96c5-5a09f9997b9c",
         scope=Scope.settings,
         help='TODO',
     )
@@ -30,36 +35,39 @@ class TemplateXblock(XBlock):
         html = self.resource_string("private/html/view.html")
         frag = Fragment(html.format(
             name=self.name,
+            videoUrl=self.videoUrl,
         ))
         frag.add_css_url(self.resource_url("public/view.less.min.css"))
         frag.add_javascript_url(self.resource_url("public/view.js.min.js"))
-        frag.initialize_js('TemplateXblockView')
+        frag.initialize_js('SCPDVideoView')
         return frag
 
     def studio_view(self, context=None):
         html = self.resource_string("private/html/edit.html")
         frag = Fragment(html.format(
             name=self.name,
+            videoUrl=self.videoUrl,
         ))
         frag.add_javascript_url(self.resource_url("public/edit.js.min.js"))
-        frag.initialize_js('TemplateXblockEdit')
+        frag.initialize_js('SCPDVideoEdit')
         return frag
 
     @XBlock.json_handler
     def studio_view_post(self, data, suffix=''):
-        self.name = data['xblock_templatexblock_name']
+        self.name = data['xblock_scpdvideo_name']
+        self.videoUrl = data['xblock_scpdvideo_video_url']
         return {
-            'xblock_templatexblock_name': self.name,
+            'xblock_scpdvideo_name': self.name,
+            'xblock_scpdvideo_video_url': self.videoUrl,
         }
 
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("TemplateXblock",
+            ("SCPDVideo",
              """<vertical_demo>
-                    <templatexblock />
-                    <templatexblock name="My First XBlock" />
+                    <scpdvideo name="My First XBlock" videoUrl="https://mvideos.stanford.edu/Viewer/Video/PlayVideo/?assetId=64819bff-bf15-49b9-96c5-5a09f9997b9c" />
                 </vertical_demo>
              """),
         ]
