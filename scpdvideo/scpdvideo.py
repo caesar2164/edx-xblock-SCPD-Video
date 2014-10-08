@@ -1,6 +1,6 @@
 from re import match
 
-import pkg_resources
+import pkg_resources, cgi
 
 from xblock.core import XBlock
 from xblock.fields import Scope
@@ -43,10 +43,30 @@ class SCPDVideo(XBlock):
         return frag
 
     def studio_view(self, context=None):
+        source_text = """
+        <iframe name="videoFrame" id="videoFrame" width="830" height="519"
+            frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"
+            src="https://mvideos.stanford.edu/Viewer/Video/PlayVideo/?assetId=64819bff-bf15-49b9-96c5-5a09f9997b9c"
+        ></iframe>
+        <iframe id="helper" style="display: none;" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+        <script>
+            document.domain='class.stanford.edu';
+            function fnVideoSupport() {
+                var name = $('.user .user-link').text().replace(/\s+/g,'');
+                message='username=' + name;
+                var elem=document.getElementById('helper');
+                elem.contentWindow.location = 'https://mvideos.stanford.edu/Viewer/index_helper.html#' + message;
+            }
+            window.onload = function() {
+                fnVideoSupport();
+            };
+        </script>
+        """
         html = self.resource_string("private/html/edit.html")
         frag = Fragment(html.format(
             name=self.name,
             videoUrl=self.videoUrl,
+            source_content = cgi.escape(source_text),
         ))
         frag.add_javascript_url(self.resource_url("public/edit.js.min.js"))
         frag.initialize_js('SCPDVideoEdit')

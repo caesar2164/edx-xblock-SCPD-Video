@@ -36,4 +36,9 @@ function SCPDVideoEdit(runtime, element) {
         });
         return false;
     });
+    
+    $('#display-source').click(function(e) {
+        e.preventDefault();
+        $('#content-source').toggle();
+    });
 }
